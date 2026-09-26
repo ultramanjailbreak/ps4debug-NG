@@ -58,14 +58,6 @@ int _main(void) {
         memset(ip_buf, 0, sizeof(ip_buf));
         net_get_ip_address(ip_buf);
 
-        if (strlen(ip_buf) > 4) {
-
-            sceSysUtilSendSystemNotificationWithText(222, PACKET_BRANDING "\thanks to richard,\n67, 67, 67\n& 67! \xE2\x9D\xA4");
-            retry = 0;
-            start_server();
-            continue;
-        }
-
         int next = retry + 1;
         if (retry == 0) {
 
