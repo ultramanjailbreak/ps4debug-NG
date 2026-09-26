@@ -40,7 +40,7 @@ int _main(void) {
     sceKernelSleep(2);
 
     if (ps4debug_already_running()) {
-        sceSysUtilSendSystemNotificationWithText(222, "payload is already running - injection skipped");
+        sceSysUtilSendSystemNotificationWithText(222, "ps4debug is already running!");
         return 0;
     }
 
@@ -51,25 +51,21 @@ int _main(void) {
 
     turboscan_startup_cleanup();
 
-    int retry = 0;
+    // 1. Get the local IP address to display in the notification
     char ip_buf[16];
+    memset(ip_buf, 0, sizeof(ip_buf));
+    net_get_ip_address(ip_buf);
 
-    while (1) {
-        memset(ip_buf, 0, sizeof(ip_buf));
-        net_get_ip_address(ip_buf);
+    // 2. Format and send the "Loaded/Ready" notification
+    char notification_msg[256];
+    snprintf(notification_msg, sizeof(notification_msg), "RIKU IS SNIFFING SOCKS");
+    sceSysUtilSendSystemNotificationWithText(222, notification_msg);
 
-        int next = retry + 1;
-        if (retry == 0) {
-
-            sceSysUtilSendSystemNotificationWithText(222, "6767 v" PS4DEBUG_NG_VERSION_STR " disconnected.");
-            sceKernelSleep(2);
-        } else if (next <= 99) {
-            sceKernelSleep(2);
-        } else {
-            sceKernelSleep(1000);
-        }
-        retry = next;
-    }
+    // 3. Initialize debugger components and start the server thread/loop
+    ptrace_init();
+    
+    // This starts the listening server on SERVER_PORT and handles incoming connections
+    server_init(); 
 
     return 0;
 }
