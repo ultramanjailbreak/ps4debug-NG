@@ -40,7 +40,7 @@ int _main(void) {
     sceKernelSleep(2);
 
     if (ps4debug_already_running()) {
-        sceSysUtilSendSystemNotificationWithText(222, "ps4debug-NG is already running - injection skipped");
+        sceSysUtilSendSystemNotificationWithText(222, "payload is already running - injection skipped");
         return 0;
     }
 
@@ -60,7 +60,7 @@ int _main(void) {
 
         if (strlen(ip_buf) > 4) {
 
-            sceSysUtilSendSystemNotificationWithText(222, PACKET_BRANDING "\nSpecial thanks to golden,\nCtn, SiSTRo, DeathRGH\n& Pharaoh2k! \xE2\x9D\xA4");
+            sceSysUtilSendSystemNotificationWithText(222, PACKET_BRANDING "\thanks to richard,\n67, 67, 67\n& 67! \xE2\x9D\xA4");
             retry = 0;
             start_server();
             continue;
@@ -69,7 +69,7 @@ int _main(void) {
         int next = retry + 1;
         if (retry == 0) {
 
-            sceSysUtilSendSystemNotificationWithText(222, "ps4debug-ng by OpenSourcerer v" PS4DEBUG_NG_VERSION_STR " disconnected.");
+            sceSysUtilSendSystemNotificationWithText(222, "6767 v" PS4DEBUG_NG_VERSION_STR " disconnected.");
             sceKernelSleep(2);
         } else if (next <= 99) {
             sceKernelSleep(2);
