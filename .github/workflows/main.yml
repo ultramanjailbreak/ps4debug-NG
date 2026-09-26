@@ -20,22 +20,28 @@ jobs:
   build:
     permissions:
       contents: write
-    runs-on: ubuntu-latest
+    # Force the specific runner version your build.sh script demands
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
-        uses: actions/checkout@main
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Build with PS4 Payload SDK
-        uses: Scene-Collective/ps4-payload-sdk@main
-        with:
-          app_path: .
-          build_command: bash build.sh
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential gcc make
+
+      - name: Build Payload natively on host
+        env:
+          # Mimics the environment mapping done by the SDK container
+          PS4SDK: ${{ github.workspace }}/ps4-payload-sdk
+        run: bash build.sh
 
       - name: Upload payload artifact
         if: github.event_name == 'pull_request'
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.hen-bin }}
           path: ${{ env.hen-bin }}
